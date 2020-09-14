@@ -9,30 +9,48 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = True
 Option Explicit
 
+' 手順：
+' Step1: アンケート回答（Word）をすべてExcelに集計する
+' Step2: 集計結果を、提出フォーマットに追記 & アンケート回答関連ファイルを対応IDにリネーム
 
-Sub execute()
-    Dim strAnkeDataPath As String
-    strAnkeDataPath = "data-アンケート結果"
-    Dim strAnkeDataOutPath As String
-    strAnkeDataOutPath = "data-アンケート結果集計"
-    Dim strAnkeDataOutFilename As String
-    strAnkeDataOutFilename = "アンケート結果集計.xlsx"
 
-    Call syuukeiAnketo(strAnkeDataPath, strAnkeDataOutPath, strAnkeDataOutFilename)
+Sub executeStep1()
+    Dim strBaseDataFolderName As String
+    strBaseDataFolderName = "data"
+    
+    ' アンケート回答
+    Dim strQuestionnaireFolderName As String
+    strQuestionnaireFolderName = "questionnaire"
+    
+    ' アンケート集計
+    Dim strQuestionnaireTotalFolderName As String
+    strQuestionnaireTotalFolderName = "total"
+    Dim strQuestionnaireTotalFileName As String
+    strQuestionnaireTotalFileName = "questionnaire-total.xlsx"
+    
+    
+    Dim strQuestionnaireFolderPath As String
+    strQuestionnaireFolderPath = strBaseDataFolderName & strQuestionnaireFolderName
+    Dim strQuestionnaireTotalFolderPath As String
+    strQuestionnaireTotalFolderPath = strBaseDataFolderName & strQuestionnaireTotalFolderName
+    Dim strQuestionnaireTotalFilePath As String
+    strQuestionnaireTotalFilePath = strBaseDataFolderName & strQuestionnaireTotalFileName
+
+    Call syuukeiAnketo(strQuestionnaireFolderPath, strQuestionnaireTotalFolderPath, strQuestionnaireTotalFilePath)
 End Sub
 
-Sub syuukeiAnketo(strAnkeDataPath As String, strAnkeDataOutPath As String, strAnkeDataOutFilename As String)
+Sub aggregatesyuukeiQuestionnaire(strQuestionnaireFolderPath As String, strQuestionnaireTotalFolderPath As String, strQuestionnaireTotalFilePath As String)
     
     
     Dim wordFiles As String
-    wordFiles = strAnkeDataPath & "\*.docx"
+    wordFiles = strQuestionnaireFolderPath & "\*.docx"
 
     Dim fileName As String
     fileName = Dir(wordFiles)
 
     Do While fileName <> ""
         Dim wordFile As String
-        wordFile = ThisWorkbook.Path & "\" & strAnkeDataPath & "\" & fileName
+        wordFile = ThisWorkbook.Path & "\" & strQuestionnaireFolderPath & "\" & fileName
         
         Dim wdApp As Word.Application
         Dim wdDoc As Word.Document
@@ -71,28 +89,4 @@ Sub syuukeiAnketo(strAnkeDataPath As String, strAnkeDataOutPath As String, strAn
     Loop
 
 End Sub
-
-
-Sub devided()
-    Dim strFile As String
-    strFile = ThisWorkbook.Path & "\" & "data-mgs" & "\" & "（返信）RE_ 社内報アンケートについてのご依頼(nozaki).msg"
-
-    With CreateObject("Scripting.FileSystemObject")
-        Dim olApp As Object
-        Set olApp = CreateObject("Outlook.Application")
-    
-        With OutlookApp.GetNamespace("MAPI")
-            Set Item = .OpenSharedItem(strFile)
-            Select Case LCase(TypeName(Item))
-                Case "mailitem"
-                    
-            End Select
-        End With
-    
-    End With
-    Dim msg As Object
-    Set msg = olApp.CreateItemFromTemplate(strFile)
-    
-End Sub
-
 
