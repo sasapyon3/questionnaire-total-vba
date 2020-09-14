@@ -30,20 +30,20 @@ Sub executeStep1()
     
     
     Dim strQuestionnaireFolderPath As String
-    strQuestionnaireFolderPath = strBaseDataFolderName & strQuestionnaireFolderName
+    strQuestionnaireFolderPath = strBaseDataFolderName & "\" & strQuestionnaireFolderName
     Dim strQuestionnaireTotalFolderPath As String
-    strQuestionnaireTotalFolderPath = strBaseDataFolderName & strQuestionnaireTotalFolderName
+    strQuestionnaireTotalFolderPath = strBaseDataFolderName & "\" & strQuestionnaireTotalFolderName
     Dim strQuestionnaireTotalFilePath As String
-    strQuestionnaireTotalFilePath = strBaseDataFolderName & strQuestionnaireTotalFileName
+    strQuestionnaireTotalFilePath = strBaseDataFolderName & "\" & strQuestionnaireTotalFileName
 
-    Call syuukeiAnketo(strQuestionnaireFolderPath, strQuestionnaireTotalFolderPath, strQuestionnaireTotalFilePath)
+    Call aggregatesyuukeiQuestionnaire(strQuestionnaireFolderPath, strQuestionnaireTotalFolderPath, strQuestionnaireTotalFilePath)
 End Sub
 
 Sub aggregatesyuukeiQuestionnaire(strQuestionnaireFolderPath As String, strQuestionnaireTotalFolderPath As String, strQuestionnaireTotalFilePath As String)
     
     
     Dim wordFiles As String
-    wordFiles = strQuestionnaireFolderPath & "\*.docx"
+    wordFiles = ThisWorkbook.Path & "\" & strQuestionnaireFolderPath & "\*.docx"
 
     Dim fileName As String
     fileName = Dir(wordFiles)
