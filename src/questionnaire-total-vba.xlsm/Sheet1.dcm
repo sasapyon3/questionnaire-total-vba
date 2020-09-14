@@ -147,3 +147,49 @@ Continue:
     
     FileSearch = strFileName
 End Function
+
+
+
+Sub executeStep2()
+    Dim strBaseDataFolderName As String
+    strBaseDataFolderName = "data"
+    
+    ' アンケート回答
+    Dim strQuestionnaireFolderName As String
+    strQuestionnaireFolderName = "questionnaire"
+    
+    ' アンケート回答(リネーム)
+    Dim strRenamedQuestionnaireFolderName As String
+    strRenamedQuestionnaireFolderName = "renamed-questionnaire"
+    
+    ' アンケート集計
+    Dim strQuestionnaireTotalFolderName As String
+    strQuestionnaireTotalFolderName = "total"
+    Dim strQuestionnaireTotalFileName As String
+    strQuestionnaireTotalFileName = "questionnaire-total.xlsx"
+    
+    ' アンケート集計転記
+    Dim strPostedQuestionnaireTotalFolderName As String
+    strPostedQuestionnaireTotalFolderName = "total"
+    Dim strPostedQuestionnaireTotalFileName As String
+    strPostedQuestionnaireTotalFileName = "posted-questionnaire-total.xlsx"
+    
+    
+    Dim strQuestionnaireTotalFilePath As String
+    strQuestionnaireTotalFilePath = strBaseDataFolderName & "\" & strQuestionnaireTotalFolderName & "\" & strQuestionnaireTotalFileName
+    Dim strPostedQuestionnaireTotalFolderPath As String
+    strPostedQuestionnaireTotalFolderPath = strBaseDataFolderName & "\" & strPostedQuestionnaireTotalFolderName & "\" & strPostedQuestionnaireTotalFileName
+    Dim strQuestionnaireFolderPath As String
+    strQuestionnaireFolderPath = strBaseDataFolderName & "\" & strQuestionnaireFolderName
+    Dim strRenamedQuestionnaireFolderPath As String
+    strRenamedQuestionnaireFolderPath = strBaseDataFolderName & "\" & strRenamedQuestionnaireFolderName
+
+    Call postQuestionnaireTotal(strQuestionnaireTotalFilePath, strPostedQuestionnaireTotalFolderPath, strQuestionnaireFolderPath, strRenamedQuestionnaireFolderPath)
+End Sub
+
+Sub postQuestionnaireTotal(strQuestionnaireTotalFilePath As String, strPostedQuestionnaireTotalFolderPath As String, strQuestionnaireFolderPath As String, strRenamedQuestionnaireFolderPath As String)
+    Debug.Print strQuestionnaireTotalFilePath
+    Debug.Print strPostedQuestionnaireTotalFolderPath
+    Debug.Print strQuestionnaireFolderPath
+    Debug.Print strRenamedQuestionnaireFolderPath
+End Sub
