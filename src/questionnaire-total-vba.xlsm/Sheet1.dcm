@@ -33,13 +33,22 @@ Sub executeStep1()
     strQuestionnaireFolderPath = strBaseDataFolderName & "\" & strQuestionnaireFolderName
     Dim strQuestionnaireTotalFolderPath As String
     strQuestionnaireTotalFolderPath = strBaseDataFolderName & "\" & strQuestionnaireTotalFolderName
-    Dim strQuestionnaireTotalFilePath As String
-    strQuestionnaireTotalFilePath = strBaseDataFolderName & "\" & strQuestionnaireTotalFileName
 
-    Call aggregatesyuukeiQuestionnaire(strQuestionnaireFolderPath, strQuestionnaireTotalFolderPath, strQuestionnaireTotalFilePath)
+    Call aggregatesyuukeiQuestionnaire(strQuestionnaireFolderPath, strQuestionnaireTotalFolderPath, strQuestionnaireTotalFileName)
 End Sub
 
-Sub aggregatesyuukeiQuestionnaire(strQuestionnaireFolderPath As String, strQuestionnaireTotalFolderPath As String, strQuestionnaireTotalFilePath As String)
+Sub aggregatesyuukeiQuestionnaire(strQuestionnaireFolderPath As String, strQuestionnaireTotalFolderPath As String, strQuestionnaireTotalFileName As String)
+    Dim strQuestionnaireTotalFilePath As String
+    strQuestionnaireTotalFilePath = ThisWorkbook.Path & "\" & strQuestionnaireTotalFolderPath & "\" & strQuestionnaireTotalFileName
+
+    Dim xlApp As Excel.Application
+    Dim xlWookbook As Excel.Workbook
+    Dim xlSheet As Excel.Worksheet
+    Set xlApp = CreateObject("Excel.Application")
+    xlApp.Visible = True
+    'Set xlWookbook = xlApp.Workbooks.Add()
+    Set xlWookbook = xlApp.Workbooks.Open(strQuestionnaireTotalFilePath)
+    Set xlSheet = xlWookbook.Sheets(1)
     
     
     Dim wordFiles As String
@@ -48,6 +57,8 @@ Sub aggregatesyuukeiQuestionnaire(strQuestionnaireFolderPath As String, strQuest
     Dim fileName As String
     fileName = Dir(wordFiles)
 
+    Dim i As Integer
+    i = 2
     Do While fileName <> ""
         Dim wordFile As String
         wordFile = ThisWorkbook.Path & "\" & strQuestionnaireFolderPath & "\" & fileName
@@ -61,20 +72,42 @@ Sub aggregatesyuukeiQuestionnaire(strQuestionnaireFolderPath As String, strQuest
         Dim countTables As Integer
         countTables = wdDoc.Tables.Count
         If countTables = 6 Then
-            Dim txt As String
-            txt = wdDoc.Tables(1).Range.Cells(2).Range.Text
-            Debug.Print txt
-            txt = wdDoc.Tables(2).Range.Cells(2).Range.Text
-            Debug.Print txt
-            txt = wdDoc.Tables(3).Range.Cells(1).Range.Text
-            Debug.Print txt
-            txt = wdDoc.Tables(4).Range.Cells(1).Range.Text
-            Debug.Print txt
-            txt = wdDoc.Tables(5).Range.Cells(1).Range.Text
-            Debug.Print txt
-            txt = wdDoc.Tables(6).Range.Cells(1).Range.Text
-            Debug.Print txt
+            Dim name As String
+            name = wdDoc.Tables(1).Range.Cells(2).Range.Text
+            Dim sname As String
+            sname = Replace(name, "Å@", "")
+            sname = Replace(sname, " ", "")
+            Dim department As String
+            department = wdDoc.Tables(2).Range.Cells(2).Range.Text
+            Dim question1 As String
+            question1 = wdDoc.Tables(3).Range.Cells(1).Range.Text
+            Dim question2 As String
+            question2 = wdDoc.Tables(4).Range.Cells(1).Range.Text
+            Dim question3 As String
+            question3 = wdDoc.Tables(5).Range.Cells(1).Range.Text
+            Dim question4 As String
+            question4 = wdDoc.Tables(6).Range.Cells(1).Range.Text
             
+            Dim fileNo As String
+            Dim tmp As Variant
+            tmp = Split(fileName, "-")
+            fileNo = tmp(0)
+            
+            Dim fileName2 As String
+            fileName2 = FileSearch(ThisWorkbook.Path & "\" & strQuestionnaireFolderPath, fileName, fileNo & "-*")
+            
+            xlSheet.Cells(i, 1) = sname
+            xlSheet.Cells(i, 2) = department
+            xlSheet.Cells(i, 3) = name
+            xlSheet.Cells(i, 4) = question1
+            xlSheet.Cells(i, 5) = question2
+            xlSheet.Cells(i, 6) = question3
+            xlSheet.Cells(i, 7) = question4
+            xlSheet.Cells(i, 8) = fileNo
+            xlSheet.Cells(i, 9) = fileName
+            xlSheet.Cells(i, 10) = fileName2
+            
+            i = i + 1
         End If
         
         If countTables = 5 Then
@@ -88,5 +121,29 @@ Sub aggregatesyuukeiQuestionnaire(strQuestionnaireFolderPath As String, strQuest
         fileName = Dir()
     Loop
 
+    xlApp.DisplayAlerts = False
+    xlWookbook.Save
+    xlWookbook.Close
+    xlApp.DisplayAlerts = True
+    Call xlApp.Quit
+    Set xlApp = Nothing
 End Sub
 
+
+Function FileSearch(strPath As String, strTargetWord As String, strTargetOther As String)
+    Dim strFileName As String
+    Dim FSO As Object, File As Variant
+    Set FSO = CreateObject("Scripting.FileSystemObject")
+    For Each File In FSO.GetFolder(strPath).Files
+        If File.name Like strTargetWord Then
+            GoTo Continue
+        End If
+        If File.name Like strTargetOther Then
+            strFileName = File.name
+            Exit For
+        End If
+Continue:
+    Next File
+    
+    FileSearch = strFileName
+End Function
