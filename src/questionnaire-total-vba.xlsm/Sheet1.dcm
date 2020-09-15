@@ -249,6 +249,8 @@ Sub postQuestionnaireTotal(strQuestionnaireTotalFilePath As String, strPostedQue
         FSO.CopyFile ThisWorkbook.Path & "\" & strQuestionnaireFolderPath & "\" & strImageFileName, ThisWorkbook.Path & "\" & strRenamedQuestionnaireFolderPath & "\" & strDstImageFileName
         Set FSO = Nothing
         
+        xlSheet.Cells(i, 11) = strTargetNumber
+        
 Continue:
         i = i + 1
         sname = xlSheet.Cells(i, 1)
