@@ -256,6 +256,15 @@ Continue:
         sname = xlSheet.Cells(i, 1)
     Loop
 
+    xlApp.DisplayAlerts = False
+    xlTargetWorkbook.Save
+    xlTargetWorkbook.Close
+    xlWookbook.Save
+    xlWookbook.Close
+    xlApp.DisplayAlerts = True
+    Call xlApp.Quit
+    Set xlApp = Nothing
+
 End Sub
 
 Function SearchTargetSheet(ByRef xlTargetWorkbook As Excel.Workbook, sname As String) As Integer()
