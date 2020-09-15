@@ -73,20 +73,20 @@ Sub aggregatesyuukeiQuestionnaire(strQuestionnaireFolderPath As String, strQuest
         countTables = wdDoc.Tables.Count
         If countTables = 6 Then
             Dim name As String
-            name = wdDoc.Tables(1).Range.Cells(2).Range.Text
+            name = Replace(wdDoc.Tables(2).Range.Cells(2).Range.Text, vbCr & Chr(7), "")
             Dim sname As String
             sname = Replace(name, "Å@", "")
             sname = Replace(sname, " ", "")
             Dim department As String
-            department = wdDoc.Tables(2).Range.Cells(2).Range.Text
+            department = Replace(wdDoc.Tables(1).Range.Cells(2).Range.Text, vbCr & Chr(7), "")
             Dim question1 As String
-            question1 = wdDoc.Tables(3).Range.Cells(1).Range.Text
+            question1 = Replace(wdDoc.Tables(3).Range.Cells(1).Range.Text, vbCr & Chr(7), "")
             Dim question2 As String
-            question2 = wdDoc.Tables(4).Range.Cells(1).Range.Text
+            question2 = Replace(wdDoc.Tables(4).Range.Cells(1).Range.Text, vbCr & Chr(7), "")
             Dim question3 As String
-            question3 = wdDoc.Tables(5).Range.Cells(1).Range.Text
+            question3 = Replace(wdDoc.Tables(5).Range.Cells(1).Range.Text, vbCr & Chr(7), "")
             Dim question4 As String
-            question4 = wdDoc.Tables(6).Range.Cells(1).Range.Text
+            question4 = Replace(wdDoc.Tables(6).Range.Cells(1).Range.Text, vbCr & Chr(7), "")
             
             Dim fileNo As String
             Dim tmp As Variant
