@@ -261,8 +261,7 @@ Function SearchTargetSheet(ByRef xlTargetWorkbook As Excel.Workbook, sname As St
     Dim targetSheetIndex As Integer
     Dim xlSheet As Excel.Worksheet
     Dim i As Integer
-    'For Each xlSheet In xlTargetWorkbook.Sheets
-        Set xlSheet = xlTargetWorkbook.Sheets(1)
+    For Each xlSheet In xlTargetWorkbook.Sheets
         i = 1
         Dim name As String
         name = Replace(Replace(xlSheet.Cells(i, 2), "Å@", ""), " ", "")
@@ -275,7 +274,7 @@ Function SearchTargetSheet(ByRef xlTargetWorkbook As Excel.Workbook, sname As St
             i = i + 1
             name = Replace(Replace(xlSheet.Cells(i, 2), "Å@", ""), " ", "")
         Loop
-    'Next xlSheet
+    Next xlSheet
 Matched:
     cellPosition(0) = targetSheetIndex
     cellPosition(1) = i
