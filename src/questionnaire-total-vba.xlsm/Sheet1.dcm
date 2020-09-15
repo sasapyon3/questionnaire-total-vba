@@ -230,6 +230,25 @@ Sub postQuestionnaireTotal(strQuestionnaireTotalFilePath As String, strPostedQue
         xlTargetSheet.Cells(targetRow, 14) = "‡C" & xlSheet.Cells(i, 7)
         
         
+        Dim strTargetNumber As String
+        Dim strDocFileName As String
+        Dim strImageFileName As String
+        strTargetNumber = xlTargetSheet.Cells(targetRow, 1)
+        strDocFileName = xlSheet.Cells(i, 9)
+        strImageFileName = xlSheet.Cells(i, 10)
+        
+        Dim FSO As Object, File As Variant
+        Set FSO = CreateObject("Scripting.FileSystemObject")
+        
+        Dim strDstDocFileName As String
+        Dim strDstImageFileName As String
+        strDstDocFileName = strTargetNumber & "." & FSO.GetExtensionName(strDocFileName)
+        strDstImageFileName = strTargetNumber & "." & FSO.GetExtensionName(strImageFileName)
+        
+        FSO.CopyFile ThisWorkbook.Path & "\" & strQuestionnaireFolderPath & "\" & strDocFileName, ThisWorkbook.Path & "\" & strRenamedQuestionnaireFolderPath & "\" & strDstDocFileName
+        FSO.CopyFile ThisWorkbook.Path & "\" & strQuestionnaireFolderPath & "\" & strImageFileName, ThisWorkbook.Path & "\" & strRenamedQuestionnaireFolderPath & "\" & strDstImageFileName
+        Set FSO = Nothing
+        
 Continue:
         i = i + 1
         sname = xlSheet.Cells(i, 1)
@@ -262,3 +281,5 @@ Matched:
     cellPosition(1) = i
     SearchTargetSheet = cellPosition
 End Function
+
+
