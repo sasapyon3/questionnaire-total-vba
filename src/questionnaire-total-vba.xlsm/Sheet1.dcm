@@ -177,22 +177,23 @@ Sub executeStep2()
     
     Dim strQuestionnaireTotalFilePath As String
     strQuestionnaireTotalFilePath = strBaseDataFolderName & "\" & strQuestionnaireTotalFolderName & "\" & strQuestionnaireTotalFileName
-    Dim strPostedQuestionnaireTotalFolderPath As String
-    strPostedQuestionnaireTotalFolderPath = strBaseDataFolderName & "\" & strPostedQuestionnaireTotalFolderName & "\" & strPostedQuestionnaireTotalFileName
+    Dim strPostedQuestionnaireTotalFilePath As String
+    strPostedQuestionnaireTotalFilePath = strBaseDataFolderName & "\" & strPostedQuestionnaireTotalFolderName & "\" & strPostedQuestionnaireTotalFileName
     Dim strQuestionnaireFolderPath As String
     strQuestionnaireFolderPath = strBaseDataFolderName & "\" & strQuestionnaireFolderName
     Dim strRenamedQuestionnaireFolderPath As String
     strRenamedQuestionnaireFolderPath = strBaseDataFolderName & "\" & strRenamedQuestionnaireFolderName
 
-    Call postQuestionnaireTotal(strQuestionnaireTotalFilePath, strPostedQuestionnaireTotalFolderPath, strQuestionnaireFolderPath, strRenamedQuestionnaireFolderPath)
+    Call postQuestionnaireTotal(strQuestionnaireTotalFilePath, strPostedQuestionnaireTotalFilePath, strQuestionnaireFolderPath, strRenamedQuestionnaireFolderPath)
 End Sub
 
-Sub postQuestionnaireTotal(strQuestionnaireTotalFilePath As String, strPostedQuestionnaireTotalFolderPath As String, strQuestionnaireFolderPath As String, strRenamedQuestionnaireFolderPath As String)
+Sub postQuestionnaireTotal(strQuestionnaireTotalFilePath As String, strPostedQuestionnaireTotalFilePath As String, strQuestionnaireFolderPath As String, strRenamedQuestionnaireFolderPath As String)
     Debug.Print strQuestionnaireTotalFilePath
-    Debug.Print strPostedQuestionnaireTotalFolderPath
+    Debug.Print strPostedQuestionnaireTotalFilePath
     Debug.Print strQuestionnaireFolderPath
     Debug.Print strRenamedQuestionnaireFolderPath
     
+    ' ì]ãLå≥ÇÃExcel
     Dim xlApp As Excel.Application
     Dim xlWookbook As Excel.Workbook
     Dim xlSheet As Excel.Worksheet
@@ -201,4 +202,48 @@ Sub postQuestionnaireTotal(strQuestionnaireTotalFilePath As String, strPostedQue
     Set xlWookbook = xlApp.Workbooks.Open(ThisWorkbook.Path & "\" & strQuestionnaireTotalFilePath)
     Set xlSheet = xlWookbook.Sheets(1)
 
+    ' ì]ãLêÊÇÃExcel
+    Dim xlTargetWorkbook As Excel.Workbook
+    Dim xlTargetSheet As Excel.Worksheet
+    Set xlTargetWorkbook = xlApp.Workbooks.Open(ThisWorkbook.Path & "\" & strPostedQuestionnaireTotalFilePath)
+
+    Dim i As Integer
+    i = 2
+    Dim sname As String
+    sname = xlSheet.Cells(i, 1)
+    Do While sname <> ""
+        Debug.Print "[" & i & "] " & sname
+        Dim targetSheetRowIndexs() As Integer
+        targetSheetRowIndexs = SearchTargetSheet(xlTargetWorkbook, sname)
+        
+        i = i + 1
+        sname = xlSheet.Cells(i, 1)
+    Loop
+
 End Sub
+
+Function SearchTargetSheet(ByRef xlTargetWorkbook As Excel.Workbook, sname As String) As Integer()
+    Dim cellPosition(1) As Integer
+    Dim targetSheetIndex As Integer
+    Dim xlSheet As Excel.Worksheet
+    Dim i As Integer
+    'For Each xlSheet In xlTargetWorkbook.Sheets
+        Set xlSheet = xlTargetWorkbook.Sheets(1)
+        i = 1
+        Dim name As String
+        name = Replace(Replace(xlSheet.Cells(i, 2), "Å@", ""), " ", "")
+        Do While name <> ""
+            If name = sname Then
+                targetSheetIndex = xlSheet.Index
+                GoTo Matched
+            End If
+         
+            i = i + 1
+            name = Replace(Replace(xlSheet.Cells(i, 2), "Å@", ""), " ", "")
+        Loop
+    'Next xlSheet
+Matched:
+    cellPosition(0) = targetSheetIndex
+    cellPosition(1) = i
+    SearchTargetSheet = cellPosition
+End Function
