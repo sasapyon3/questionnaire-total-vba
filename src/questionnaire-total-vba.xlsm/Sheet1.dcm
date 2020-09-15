@@ -215,7 +215,22 @@ Sub postQuestionnaireTotal(strQuestionnaireTotalFilePath As String, strPostedQue
         Debug.Print "[" & i & "] " & sname
         Dim targetSheetRowIndexs() As Integer
         targetSheetRowIndexs = SearchTargetSheet(xlTargetWorkbook, sname)
+        If targetSheetRowIndexs(0) = 0 Or targetSheetRowIndexs(1) = 0 Then
+            GoTo Continue
+        End If
         
+        Set xlTargetSheet = xlTargetWorkbook.Sheets(targetSheetRowIndexs(0))
+        Dim targetRow As Integer
+        targetRow = targetSheetRowIndexs(1)
+        xlTargetSheet.Cells(targetRow, 5) = xlSheet.Cells(i, 2)
+        xlTargetSheet.Cells(targetRow, 10) = xlSheet.Cells(i, 3)
+        xlTargetSheet.Cells(targetRow, 11) = "‡@" & xlSheet.Cells(i, 4)
+        xlTargetSheet.Cells(targetRow, 12) = "‡A" & xlSheet.Cells(i, 5)
+        xlTargetSheet.Cells(targetRow, 13) = "‡B" & xlSheet.Cells(i, 6)
+        xlTargetSheet.Cells(targetRow, 14) = "‡C" & xlSheet.Cells(i, 7)
+        
+        
+Continue:
         i = i + 1
         sname = xlSheet.Cells(i, 1)
     Loop
