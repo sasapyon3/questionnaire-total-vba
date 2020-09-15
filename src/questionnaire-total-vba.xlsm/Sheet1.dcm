@@ -192,4 +192,13 @@ Sub postQuestionnaireTotal(strQuestionnaireTotalFilePath As String, strPostedQue
     Debug.Print strPostedQuestionnaireTotalFolderPath
     Debug.Print strQuestionnaireFolderPath
     Debug.Print strRenamedQuestionnaireFolderPath
+    
+    Dim xlApp As Excel.Application
+    Dim xlWookbook As Excel.Workbook
+    Dim xlSheet As Excel.Worksheet
+    Set xlApp = CreateObject("Excel.Application")
+    xlApp.Visible = True
+    Set xlWookbook = xlApp.Workbooks.Open(ThisWorkbook.Path & "\" & strQuestionnaireTotalFilePath)
+    Set xlSheet = xlWookbook.Sheets(1)
+
 End Sub
