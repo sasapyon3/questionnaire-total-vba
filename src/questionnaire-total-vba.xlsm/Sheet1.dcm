@@ -35,6 +35,8 @@ Sub executeStep1()
     strQuestionnaireTotalFolderPath = strBaseDataFolderName & "\" & strQuestionnaireTotalFolderName
 
     Call aggregatesyuukeiQuestionnaire(strQuestionnaireFolderPath, strQuestionnaireTotalFolderPath, strQuestionnaireTotalFileName)
+    
+    MsgBox "STEP1 アンケート集計が完了しました"
 End Sub
 
 Sub aggregatesyuukeiQuestionnaire(strQuestionnaireFolderPath As String, strQuestionnaireTotalFolderPath As String, strQuestionnaireTotalFileName As String)
@@ -210,6 +212,8 @@ Sub executeStep2()
     strRenamedQuestionnaireFolderPath = strBaseDataFolderName & "\" & strRenamedQuestionnaireFolderName
 
     Call postQuestionnaireTotal(strQuestionnaireTotalFilePath, strPostedQuestionnaireTotalFilePath, strQuestionnaireFolderPath, strRenamedQuestionnaireFolderPath)
+    
+    MsgBox "STEP2 アンケート集計の転記が完了しました"
 End Sub
 
 Sub postQuestionnaireTotal(strQuestionnaireTotalFilePath As String, strPostedQuestionnaireTotalFilePath As String, strQuestionnaireFolderPath As String, strRenamedQuestionnaireFolderPath As String)
