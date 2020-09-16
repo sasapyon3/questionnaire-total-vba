@@ -71,29 +71,30 @@ Sub aggregatesyuukeiQuestionnaire(strQuestionnaireFolderPath As String, strQuest
         
         Dim countTables As Integer
         countTables = wdDoc.Tables.Count
+        
+        Dim name As String
+        Dim sname As String
+        Dim department As String
+        Dim question1 As String
+        Dim question2 As String
+        Dim question3 As String
+        Dim question4 As String
+        Dim fileNo As String
+        Dim tmp As Variant
+        Dim fileName2 As String
         If countTables = 6 Then
-            Dim name As String
             name = Replace(wdDoc.Tables(2).Range.Cells(2).Range.Text, vbCr & Chr(7), "")
-            Dim sname As String
             sname = Replace(name, "Å@", "")
             sname = Replace(sname, " ", "")
-            Dim department As String
             department = Replace(wdDoc.Tables(1).Range.Cells(2).Range.Text, vbCr & Chr(7), "")
-            Dim question1 As String
             question1 = Replace(wdDoc.Tables(3).Range.Cells(1).Range.Text, vbCr & Chr(7), "")
-            Dim question2 As String
             question2 = Replace(wdDoc.Tables(4).Range.Cells(1).Range.Text, vbCr & Chr(7), "")
-            Dim question3 As String
             question3 = Replace(wdDoc.Tables(5).Range.Cells(1).Range.Text, vbCr & Chr(7), "")
-            Dim question4 As String
             question4 = Replace(wdDoc.Tables(6).Range.Cells(1).Range.Text, vbCr & Chr(7), "")
             
-            Dim fileNo As String
-            Dim tmp As Variant
             tmp = Split(fileName, "-")
             fileNo = tmp(0)
             
-            Dim fileName2 As String
             fileName2 = FileSearch(ThisWorkbook.Path & "\" & strQuestionnaireFolderPath, fileName, fileNo & "-*")
             
             xlSheet.Cells(i, 1) = sname
@@ -111,7 +112,31 @@ Sub aggregatesyuukeiQuestionnaire(strQuestionnaireFolderPath As String, strQuest
         End If
         
         If countTables = 5 Then
+            name = Replace(wdDoc.Tables(1).Range.Cells(2).Range.Text, vbCr & Chr(7), "")
+            sname = Replace(name, "Å@", "")
+            sname = Replace(sname, " ", "")
+            question1 = Replace(wdDoc.Tables(2).Range.Cells(1).Range.Text, vbCr & Chr(7), "")
+            question2 = Replace(wdDoc.Tables(3).Range.Cells(1).Range.Text, vbCr & Chr(7), "")
+            question3 = Replace(wdDoc.Tables(4).Range.Cells(1).Range.Text, vbCr & Chr(7), "")
+            question4 = Replace(wdDoc.Tables(5).Range.Cells(1).Range.Text, vbCr & Chr(7), "")
             
+            tmp = Split(fileName, "-")
+            fileNo = tmp(0)
+            
+            fileName2 = FileSearch(ThisWorkbook.Path & "\" & strQuestionnaireFolderPath, fileName, fileNo & "-*")
+            
+            xlSheet.Cells(i, 1) = sname
+            xlSheet.Cells(i, 2) = department
+            xlSheet.Cells(i, 3) = name
+            xlSheet.Cells(i, 4) = question1
+            xlSheet.Cells(i, 5) = question2
+            xlSheet.Cells(i, 6) = question3
+            xlSheet.Cells(i, 7) = question4
+            xlSheet.Cells(i, 8) = fileNo
+            xlSheet.Cells(i, 9) = fileName
+            xlSheet.Cells(i, 10) = fileName2
+            
+            i = i + 1
         End If
       
         wdDoc.Close
