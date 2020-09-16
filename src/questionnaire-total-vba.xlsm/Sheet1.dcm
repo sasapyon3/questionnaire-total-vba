@@ -276,17 +276,31 @@ Sub postQuestionnaireTotal(strQuestionnaireTotalFilePath As String, strPostedQue
         
         Dim strDocFilePath As String
         Dim strImageFilePath As String
+        Dim strDstDocFilePath As String
+        Dim strDstImageFilePath As String
         strDocFilePath = ThisWorkbook.Path & "\" & strQuestionnaireFolderPath & "\" & strDocFileName
         strImageFilePath = ThisWorkbook.Path & "\" & strQuestionnaireFolderPath & "\" & strImageFileName
+        strDstDocFilePath = ThisWorkbook.Path & "\" & strRenamedQuestionnaireFolderPath & "\" & strDstDocFileName
+        strDstImageFilePath = ThisWorkbook.Path & "\" & strRenamedQuestionnaireFolderPath & "\" & strDstImageFileName
         
         If FSO.FileExists(strDocFilePath) Then
-            FSO.MoveFile strDocFilePath, ThisWorkbook.Path & "\" & strRenamedQuestionnaireFolderPath & "\" & strDstDocFileName
+            If FSO.FileExists(strDstDocFilePath) Then
+                ' è„èëÇ´Ç∆ìØÇ∂åãâ ÇÇ¬Ç≠ÇÈ
+                FSO.DeleteFile strDstDocFilePath
+                Debug.Print "[del] " & strDstDocFilePath
+            End If
+            FSO.MoveFile strDocFilePath, strDstDocFilePath
             'FSO.CopyFile strDocFilePath, ThisWorkbook.Path & "\" & strRenamedQuestionnaireFolderPath & "\" & strDstDocFileName
         Else
             Debug.Print "[404] " & strDocFilePath
         End If
         If FSO.FileExists(strImageFilePath) Then
-            FSO.MoveFile strImageFilePath, ThisWorkbook.Path & "\" & strRenamedQuestionnaireFolderPath & "\" & strDstImageFileName
+            If FSO.FileExists(strDstImageFilePath) Then
+                ' è„èëÇ´Ç∆ìØÇ∂åãâ ÇÇ¬Ç≠ÇÈ
+                FSO.DeleteFile strDstImageFilePath
+                Debug.Print "[del] " & strDstImageFilePath
+            End If
+            FSO.MoveFile strImageFilePath, strDstImageFilePath
             'FSO.CopyFile strImageFilePath, ThisWorkbook.Path & "\" & strRenamedQuestionnaireFolderPath & "\" & strDstImageFileName
         Else
             Debug.Print "[404] " & strImageFilePath
