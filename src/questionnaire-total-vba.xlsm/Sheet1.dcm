@@ -274,8 +274,21 @@ Sub postQuestionnaireTotal(strQuestionnaireTotalFilePath As String, strPostedQue
         strDstDocFileName = strTargetNumber & "." & FSO.GetExtensionName(strDocFileName)
         strDstImageFileName = strTargetNumber & "." & FSO.GetExtensionName(strImageFileName)
         
-        FSO.CopyFile ThisWorkbook.Path & "\" & strQuestionnaireFolderPath & "\" & strDocFileName, ThisWorkbook.Path & "\" & strRenamedQuestionnaireFolderPath & "\" & strDstDocFileName
-        FSO.CopyFile ThisWorkbook.Path & "\" & strQuestionnaireFolderPath & "\" & strImageFileName, ThisWorkbook.Path & "\" & strRenamedQuestionnaireFolderPath & "\" & strDstImageFileName
+        Dim strDocFilePath As String
+        Dim strImageFilePath As String
+        strDocFilePath = ThisWorkbook.Path & "\" & strQuestionnaireFolderPath & "\" & strDocFileName
+        strImageFilePath = ThisWorkbook.Path & "\" & strQuestionnaireFolderPath & "\" & strImageFileName
+        
+        If FSO.FileExists(strDocFilePath) Then
+            FSO.CopyFile strDocFilePath, ThisWorkbook.Path & "\" & strRenamedQuestionnaireFolderPath & "\" & strDstDocFileName
+        Else
+            Debug.Print "[404] " & strDocFilePath
+        End If
+        If FSO.FileExists(strImageFilePath) Then
+            FSO.CopyFile strImageFilePath, ThisWorkbook.Path & "\" & strRenamedQuestionnaireFolderPath & "\" & strDstImageFileName
+        Else
+            Debug.Print "[404] " & strImageFilePath
+        End If
         Set FSO = Nothing
         
         xlSheet.Cells(i, 11) = strTargetNumber
