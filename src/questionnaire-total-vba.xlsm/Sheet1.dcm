@@ -251,7 +251,7 @@ Sub postQuestionnaireTotal(strQuestionnaireTotalFilePath As String, strPostedQue
         Set xlTargetSheet = xlTargetWorkbook.Sheets(targetSheetRowIndexs(0))
         Dim targetRow As Integer
         targetRow = targetSheetRowIndexs(1)
-        xlTargetSheet.Cells(targetRow, 5) = xlSheet.Cells(i, 2)
+        xlTargetSheet.Cells(targetRow, 9) = xlSheet.Cells(i, 2)
         xlTargetSheet.Cells(targetRow, 10) = xlSheet.Cells(i, 3)
         xlTargetSheet.Cells(targetRow, 11) = "‡@" & xlSheet.Cells(i, 4)
         xlTargetSheet.Cells(targetRow, 12) = "‡A" & xlSheet.Cells(i, 5)
