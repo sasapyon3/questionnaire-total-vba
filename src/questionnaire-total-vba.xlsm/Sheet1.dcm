@@ -56,14 +56,14 @@ Sub aggregatesyuukeiQuestionnaire(strQuestionnaireFolderPath As String, strQuest
     Dim wordFiles As String
     wordFiles = ThisWorkbook.Path & "\" & strQuestionnaireFolderPath & "\*.docx"
 
-    Dim fileName As String
-    fileName = Dir(wordFiles)
+    Dim filename As String
+    filename = Dir(wordFiles)
 
     Dim i As Integer
     i = 2
-    Do While fileName <> ""
+    Do While filename <> ""
         Dim wordFile As String
-        wordFile = ThisWorkbook.Path & "\" & strQuestionnaireFolderPath & "\" & fileName
+        wordFile = ThisWorkbook.Path & "\" & strQuestionnaireFolderPath & "\" & filename
         
         Dim wdApp As Word.Application
         Dim wdDoc As Word.Document
@@ -94,10 +94,10 @@ Sub aggregatesyuukeiQuestionnaire(strQuestionnaireFolderPath As String, strQuest
             question3 = Replace(wdDoc.Tables(5).Range.Cells(1).Range.Text, vbCr & Chr(7), "")
             question4 = Replace(wdDoc.Tables(6).Range.Cells(1).Range.Text, vbCr & Chr(7), "")
             
-            tmp = Split(fileName, "-")
+            tmp = Split(filename, "-")
             fileNo = tmp(0)
             
-            fileName2 = FileSearch(ThisWorkbook.Path & "\" & strQuestionnaireFolderPath, fileName, fileNo & "-*")
+            fileName2 = FileSearch(ThisWorkbook.Path & "\" & strQuestionnaireFolderPath, filename, fileNo & "-*")
             
             xlSheet.Cells(i, 1) = sname
             xlSheet.Cells(i, 2) = department
@@ -107,7 +107,7 @@ Sub aggregatesyuukeiQuestionnaire(strQuestionnaireFolderPath As String, strQuest
             xlSheet.Cells(i, 6) = question3
             xlSheet.Cells(i, 7) = question4
             xlSheet.Cells(i, 8) = fileNo
-            xlSheet.Cells(i, 9) = fileName
+            xlSheet.Cells(i, 9) = filename
             xlSheet.Cells(i, 10) = fileName2
             
             i = i + 1
@@ -122,10 +122,10 @@ Sub aggregatesyuukeiQuestionnaire(strQuestionnaireFolderPath As String, strQuest
             question3 = Replace(wdDoc.Tables(4).Range.Cells(1).Range.Text, vbCr & Chr(7), "")
             question4 = Replace(wdDoc.Tables(5).Range.Cells(1).Range.Text, vbCr & Chr(7), "")
             
-            tmp = Split(fileName, "-")
+            tmp = Split(filename, "-")
             fileNo = tmp(0)
             
-            fileName2 = FileSearch(ThisWorkbook.Path & "\" & strQuestionnaireFolderPath, fileName, fileNo & "-*")
+            fileName2 = FileSearch(ThisWorkbook.Path & "\" & strQuestionnaireFolderPath, filename, fileNo & "-*")
             
             xlSheet.Cells(i, 1) = sname
             xlSheet.Cells(i, 2) = department
@@ -135,7 +135,7 @@ Sub aggregatesyuukeiQuestionnaire(strQuestionnaireFolderPath As String, strQuest
             xlSheet.Cells(i, 6) = question3
             xlSheet.Cells(i, 7) = question4
             xlSheet.Cells(i, 8) = fileNo
-            xlSheet.Cells(i, 9) = fileName
+            xlSheet.Cells(i, 9) = filename
             xlSheet.Cells(i, 10) = fileName2
             
             i = i + 1
@@ -145,7 +145,7 @@ Sub aggregatesyuukeiQuestionnaire(strQuestionnaireFolderPath As String, strQuest
         Call wdApp.Quit
         Set wdApp = Nothing
         
-        fileName = Dir()
+        filename = Dir()
     Loop
 
     xlApp.DisplayAlerts = False
@@ -350,4 +350,37 @@ Matched:
     SearchTargetSheet = cellPosition
 End Function
 
+
+
+Sub executeStep3()
+    Dim xlApp As Excel.Application
+    Dim xlWookbook As Excel.Workbook
+    Set xlApp = CreateObject("Excel.Application")
+    xlApp.Visible = True
+    
+    Dim filename As String
+    filename = xlApp.GetOpenFilename(FileFilter:="Microsoft Excelブック,*.xls*")
+    If filename <> "False" Then
+        Set xlWookbook = xlApp.Workbooks.Open(filename)
+    Else
+        Exit Sub 'ファイルが選択されていない場合は終了
+    End If
+
+    
+    Dim xlSheet As Excel.Worksheet
+    For Each xlSheet In xlWookbook.Sheets
+        xlSheet.Activate
+        '元のブックと同じ階層に出力
+        xlWookbook.SaveAs _
+        filename:=xlWookbook.Path & "\" & xlSheet.name & ".csv", _
+        FileFormat:=xlCSV
+    Next xlSheet
+ 
+    xlWookbook.Close SaveChanges:=False
+ 
+    Call xlApp.Quit
+    Set xlApp = Nothing
+    
+    MsgBox "STEP3 アンケート転記結果を部門別にCSV保存が完了しました"
+End Sub
 
